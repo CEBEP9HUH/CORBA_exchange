@@ -15,30 +15,31 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 
-SOURCES += idl/echoSK.cc \
+SOURCES += \
+    idl/echoSK.cc \
     src/main.cpp
 
-HEADERS += idl/echo.hh
-
+HEADERS += \
+    idl/echo.hh
 
 
 INCLUDEPATH += \
             /usr/include/omniORB4
-LIBS += /usr/lib/x86_64-linux-gnu/libomniCodeSets4.a
-LIBS += /usr/lib/x86_64-linux-gnu/libomniConnectionMgmt4.a
-LIBS += /usr/lib/x86_64-linux-gnu/libomniDynamic4.a
-LIBS += /usr/lib/x86_64-linux-gnu/libomniORB4.a
-LIBS += /usr/lib/x86_64-linux-gnu/libomnisslTP4.a
-LIBS += /usr/lib/x86_64-linux-gnu/libomnithread.a
-LIBS += /usr/lib/x86_64-linux-gnu/libomniZIOP4.a
-LIBS += /usr/lib/x86_64-linux-gnu/libomniZIOPDynamic4.a
+LIBS += \
+    /usr/lib/x86_64-linux-gnu/libomniCodeSets4.a \
+    /usr/lib/x86_64-linux-gnu/libomniConnectionMgmt4.a \
+    /usr/lib/x86_64-linux-gnu/libomniDynamic4.a \
+    /usr/lib/x86_64-linux-gnu/libomniORB4.a \
+    /usr/lib/x86_64-linux-gnu/libomnisslTP4.a \
+    /usr/lib/x86_64-linux-gnu/libomnithread.a \
+    /usr/lib/x86_64-linux-gnu/libomniZIOP4.a \
+    /usr/lib/x86_64-linux-gnu/libomniZIOPDynamic4.a
 
 SUBDIRS += \
-    corba_server.pro
+    corba_client.pro
 
 DISTFILES += \
     idl/echo.idl
-
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
