@@ -1,63 +1,81 @@
 #include <QTextStream>
-#include "idl/echo.hh"
+#include "../../idl/sendFunc.hh"
 
-class Echo_i : public POA_Echo{
+static CORBA::Boolean bindObjToName(CORBA::ORB_ptr orb, CORBA::Object_ptr objref);
+
+class sendToServer_i : public POA_sendToServer{
 public:
-    inline Echo_i() = default;
-    virtual ~Echo_i() override = default;
-    virtual char* echoString(const char* mesg) override;
+    inline sendToServer_i() = default;
+    virtual ~sendToServer_i() override = default;
+    virtual CORBA::Char sendCharToServer(CORBA::Char character) override;
 };
 
-char* Echo_i::echoString(const char *mesg){
+CORBA::Char sendToServer_i::sendCharToServer(::CORBA::Char character){
     QTextStream tStream(stdout);
-    tStream << "Upcall: " << mesg << endl;
-    return CORBA::string_dup("Tyrannosaurus!");
-}
-
-void hello(CORBA::Object_ptr obj){
-    Echo_var e = Echo::_narrow(obj);
-    QTextStream tStream(stdout);
-    if(CORBA::is_nil(e)){
-        tStream << "cannot invoke on a nil object reference." << endl;
-        return;
-    }
-    CORBA::String_var src = static_cast<const char *>("Hello!");
-    CORBA::String_var dest;
-    dest = e->echoString(src);
-
-    tStream << "I said, \"" << src << "\"."
-            << "The object said, \"" << dest << "\"." << endl;
+    tStream << QChar(character);
+    return CORBA::Char(character);
 }
 
 int main(int argc, char** argv)
 {
     QTextStream tStream(stdout);
-    try {
-      CORBA::ORB_var          orb = CORBA::ORB_init(argc, argv);
-      CORBA::Object_var       obj = orb->resolve_initial_references("RootPOA");
-      PortableServer::POA_var poa = PortableServer::POA::_narrow(obj);
+    try{
+        CORBA::ORB_var orb = CORBA::ORB_init(argc, argv);
+        CORBA::Object_var obj = orb->resolve_initial_references("RootPOA");
+        PortableServer::POA_var poa = PortableServer::POA::_narrow(obj);
 
-      PortableServer::Servant_var<Echo_i> myecho = new Echo_i();
+        PortableServer::Servant_var<sendToServer_i> sender = new sendToServer_i();
 
-      PortableServer::ObjectId_var myechoid = poa->activate_object(myecho);
+        PortableServer::ObjectId_var sender_id = poa->activate_object(sender);
 
-      // Obtain a reference to the object, and print it out as a
-      // stringified IOR.
-      obj = myecho->_this();
-      CORBA::String_var sior(orb->object_to_string(obj));
-      tStream << sior << endl;
+        obj = sender->_this();
 
-      PortableServer::POAManager_var pman = poa->the_POAManager();
-      pman->activate();
+        if(!bindObjToName(orb, obj)){
+            return 1;
+        }
 
-      // Block until the ORB is shut down.
-      orb->run();
+        PortableServer::POAManager_var pman = poa->the_POAManager();
+        pman->activate();
+
+        orb->run();
     }
-    catch (CORBA::SystemException& ex) {
-      tStream << "Caught CORBA::" << ex._name() << endl;
-    }
-    catch (CORBA::Exception& ex) {
-      tStream << "Caught CORBA::Exception: " << ex._name() << endl;
+    catch(CORBA::Exception& e){
+        tStream << e._name() << endl;
     }
     return 0;
   }
+
+static CORBA::Boolean bindObjToName(CORBA::ORB_ptr orb, CORBA::Object_ptr objref){
+    QTextStream tStream(stdout);
+    CosNaming::NamingContext_var rootContext;
+    try {
+        // root context initialization
+        CORBA::Object_var obj = orb->resolve_initial_references("NameService");
+        rootContext = CosNaming::NamingContext::_narrow(obj);
+
+        if(CORBA::is_nil(rootContext)){
+            return 0;
+        }
+
+        // custom context binding
+        CosNaming::Name contextName;
+        contextName.length(1);
+        contextName[0].id = "sending_context";
+        contextName[0].kind = "context";
+
+        CosNaming::NamingContext_var sendingContext = rootContext->bind_new_context(contextName);
+
+        // object to custom context binding
+        CosNaming::Name objectName;
+        objectName.length(1);
+        objectName[0].id = "sender";
+        objectName[0].kind = "object";
+
+        sendingContext->bind(objectName, objref);
+    }
+    catch(CORBA::Exception& e){
+        tStream << e._name() << endl;
+        return 0;
+    }
+    return 1;
+}

@@ -16,11 +16,11 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += \
-    idl/echoSK.cc \
+    ../../idl/sendFuncSK.cc \
     src/main.cpp
 
 HEADERS += \
-    idl/echo.hh
+    ../../idl/sendFunc.hh
 
 
 INCLUDEPATH += \
@@ -39,7 +39,7 @@ SUBDIRS += \
     corba_client.pro
 
 DISTFILES += \
-    idl/echo.idl
+    ../../idl/sendFunc.idl
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

@@ -15,10 +15,12 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 
-SOURCES += idl/echoSK.cc \
+SOURCES += \
+    ../../idl/sendFuncSK.cc \
     src/main.cpp
 
-HEADERS += idl/echo.hh
+HEADERS += \
+    ../../idl/sendFunc.hh
 
 
 
@@ -36,8 +38,9 @@ LIBS += /usr/lib/x86_64-linux-gnu/libomniZIOPDynamic4.a
 SUBDIRS += \
     corba_server.pro
 
+
 DISTFILES += \
-    idl/echo.idl
+    ../../idl/sendFunc.idl
 
 
 # Default rules for deployment.
