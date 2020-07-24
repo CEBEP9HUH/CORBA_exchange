@@ -1,6 +1,29 @@
 #include <QTextStream>
 #include "../../idl/sendFunc.hh"
+//-------------------------------------------
 
+
+#include <ctype.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <termios.h>
+#include <unistd.h>
+struct termios orig_termios;
+void disableRawMode() {
+  tcsetattr(STDIN_FILENO, TCSAFLUSH, &orig_termios);
+}
+void enableRawMode() {
+  tcgetattr(STDIN_FILENO, &orig_termios);
+  atexit(disableRawMode);
+  struct termios raw = orig_termios;
+  raw.c_lflag &= ~(ICANON);
+  raw.c_cc[VMIN] = 0;
+  raw.c_cc[VTIME] = 1;
+  tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw);
+}
+
+
+//---
 static CORBA::Object_ptr getObjRef(CORBA::ORB_ptr orb);
 
 static void send(sendToServer_ptr e, CORBA::Char src){
@@ -23,6 +46,7 @@ void corbaInit(int argc, char *argv[]){
       tStream << "Caught CORBA::Exception: " << ex._name() << endl;
     }
 }
+#include<iostream>
 
 int main(int argc, char *argv[]){
     QTextStream tStream(stdout);
@@ -36,15 +60,23 @@ int main(int argc, char *argv[]){
     catch (CORBA::Exception& ex) {
         tStream << "Caught CORBA::Exception: " << ex._name() << endl;
     }
-    char qch;
-    QTextStream ttStream(stdin);
-    while(1){
-       ttStream >> qch;
-       send(sender, static_cast<unsigned char>(qch));
-       if(qch == '!'){
-           break;
-       }
+
+    enableRawMode();
+    char c;
+    while(1)
+        if (read(STDIN_FILENO, &c, 1) == 1 && c != 'q') {
+          //if (!iscntrl(c)) {
+            //printf("%c\r\n", c);
+            send(sender, c);
+            if(c==13)
+                send(sender, 10);
+            if(c == '!'){
+                break;
+           // }
+      }
     }
+    disableRawMode();
+
     orb->destroy();
     return 0;
 }
