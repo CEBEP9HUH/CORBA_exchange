@@ -16,11 +16,17 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += \
-    ../../idl/sendFuncSK.cc \
-    src/main.cpp
+    ../../idl/sendToServerSK.cc \
+    src/main.cpp \
+    src/core.cpp \
+    src/sendtoserver.cpp \
+    src/CORBAServer.cpp
 
 HEADERS += \
-    ../../idl/sendFunc.hh
+    ../../idl/sendToServer.hh \
+    include/core.h \
+    include/sendtoserver.h \
+    include/CORBAServer.h
 
 
 
@@ -40,7 +46,7 @@ SUBDIRS += \
 
 
 DISTFILES += \
-    ../../idl/sendFunc.idl
+    ../../idl/sendToServer.idl
 
 
 # Default rules for deployment.
