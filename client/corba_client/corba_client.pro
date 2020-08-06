@@ -31,14 +31,8 @@ HEADERS += \
 INCLUDEPATH += \
             /usr/include/omniORB4
 LIBS += \
-    /usr/lib/x86_64-linux-gnu/libomniCodeSets4.a \
-    /usr/lib/x86_64-linux-gnu/libomniConnectionMgmt4.a \
-    /usr/lib/x86_64-linux-gnu/libomniDynamic4.a \
     /usr/lib/x86_64-linux-gnu/libomniORB4.a \
-    /usr/lib/x86_64-linux-gnu/libomnisslTP4.a \
     /usr/lib/x86_64-linux-gnu/libomnithread.a \
-    /usr/lib/x86_64-linux-gnu/libomniZIOP4.a \
-    /usr/lib/x86_64-linux-gnu/libomniZIOPDynamic4.a
 
 SUBDIRS += \
     corba_client.pro

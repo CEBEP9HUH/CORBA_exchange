@@ -4,6 +4,24 @@ Core::Core(int argc, char** argv) : _client{argc, argv} {
 
 }
 
+
+#if defined(_WIN32) || defined(_WIN64)
+
+void Core::run(){
+    if(_client.init()){
+        char c;
+        while(true){
+            c = _getch();
+            _client.send(static_cast<CORBA::Char>(c));
+            if(c==10){
+                _client.send(13);
+            }
+        }
+    }
+}
+
+#else
+
 void Core::run(){
     if(_client.init()){
         ConsoleRawMode::enableRawMode();
@@ -18,3 +36,5 @@ void Core::run(){
         }
     }
 }
+
+#endif

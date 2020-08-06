@@ -1,6 +1,11 @@
 #pragma once
 
-#include "include/consoleRawMode.h"
+
+#if defined(_WIN32) || defined(_WIN64)
+    #include <conio.h>
+#else
+    #include "include/consoleRawMode.h"
+#endif
 #include "CORBAClient.h"
 
 class Core
