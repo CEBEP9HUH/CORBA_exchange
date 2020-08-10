@@ -1,6 +1,5 @@
 #pragma once
 
-#include "include/consoleRawMode.h"
 #include "CORBAClient.h"
 
 class Core
