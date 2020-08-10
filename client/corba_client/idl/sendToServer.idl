@@ -1,0 +1,3 @@
+interface sendToServer {
+    void sendCharToServer(in char character);
+};

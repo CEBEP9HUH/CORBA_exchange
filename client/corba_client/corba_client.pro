@@ -1,4 +1,4 @@
-QT -= gui
+QT += gui
 
 CONFIG += c++11 console
 CONFIG -= app_bundle
@@ -19,14 +19,13 @@ SOURCES += \
     idl/sendToServerSK.cc \
     src/main.cpp \
     src/core.cpp \
-    src/sendtoserver.cpp \
-    src/CORBAServer.cpp
+    src/CORBAClient.cpp
 
 HEADERS += \
+    include/consoleRawMode.h \
     idl/sendToServer.hh \
     include/core.h \
-    include/sendtoserver.h \
-    include/CORBAServer.h
+    include/CORBAClient.h
 
 
 
@@ -37,12 +36,10 @@ LIBS += \
         /usr/lib/x86_64-linux-gnu/libomnithread.a \
 
 SUBDIRS += \
-    corba_server.pro
-
+    corba_client.pro
 
 DISTFILES += \
-    ../../idl/sendToServer.idl
-
+    idl/sendToServer.idl
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
