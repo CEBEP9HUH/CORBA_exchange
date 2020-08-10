@@ -1,5 +1,5 @@
 #pragma once
-#include "../../idl/sendToServer.hh"
+#include "idl/sendToServer.hh"
 
 class CORBAClient{
 private:

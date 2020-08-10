@@ -16,35 +16,30 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += \
-    ../../idl/sendToServerSK.cc \
+    idl/sendToServerSK.cc \
     src/main.cpp \
     src/core.cpp \
     src/CORBAClient.cpp
 
 HEADERS += \
-    ./include/consoleRawMode.h \
-    ../../idl/sendToServer.hh \
+    include/consoleRawMode.h \
+    idl/sendToServer.hh \
     include/core.h \
     include/CORBAClient.h
+
 
 
 INCLUDEPATH += \
             /usr/include/omniORB4
 LIBS += \
-    /usr/lib/x86_64-linux-gnu/libomniCodeSets4.a \
-    /usr/lib/x86_64-linux-gnu/libomniConnectionMgmt4.a \
-    /usr/lib/x86_64-linux-gnu/libomniDynamic4.a \
-    /usr/lib/x86_64-linux-gnu/libomniORB4.a \
-    /usr/lib/x86_64-linux-gnu/libomnisslTP4.a \
-    /usr/lib/x86_64-linux-gnu/libomnithread.a \
-    /usr/lib/x86_64-linux-gnu/libomniZIOP4.a \
-    /usr/lib/x86_64-linux-gnu/libomniZIOPDynamic4.a
+        /usr/lib/x86_64-linux-gnu/libomniORB4.a \
+        /usr/lib/x86_64-linux-gnu/libomnithread.a \
 
 SUBDIRS += \
     corba_client.pro
 
 DISTFILES += \
-    ../../idl/sendToServer.idl
+    idl/sendToServer.idl
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

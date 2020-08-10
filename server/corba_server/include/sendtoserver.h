@@ -1,5 +1,5 @@
 #pragma once
-#include "../../idl/sendToServer.hh"
+#include "idl/sendToServer.hh"
 
 
 class sendToServer_i : public POA_sendToServer{

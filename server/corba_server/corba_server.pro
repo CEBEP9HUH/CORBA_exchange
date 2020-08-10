@@ -16,14 +16,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += \
-    ../../idl/sendToServerSK.cc \
+    idl/sendToServerSK.cc \
     src/main.cpp \
     src/core.cpp \
     src/sendtoserver.cpp \
     src/CORBAServer.cpp
 
 HEADERS += \
-    ../../idl/sendToServer.hh \
+    idl/sendToServer.hh \
     include/core.h \
     include/sendtoserver.h \
     include/CORBAServer.h
